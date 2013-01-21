@@ -9,30 +9,33 @@ rule
     : OPTIONAL_BEGIN
     ;
   segment
-    : qual starter values segment_end
+    : qual elements
     ;
   segments
     : segments segment
     | segment
     ;
+  elements
+    : elements element
+    | element
+    ;
+  element
+    : plus components
+    | plus components segment_end
+    | plus
+    ;
+  components
+    : components component
+    | component
+    ;
+  component
+    : scalar colon
+    | colon scalar
+    | scalar
+    ;
   qual
     : QUALIFIER
     { @handler.start_segment; @handler.qualifier val[0] }
-    ;
-  values
-    : values value
-    | value
-    ;
-  value
-    : scalar
-    | plus scalar
-    | colon scalar
-    | scalar colon
-    | scalar plus
-    | plus scalar plus
-    | colon scalar colon
-    | colon scalar plus
-    | plus scalar colon
     ;
   scalar
     : string
@@ -48,6 +51,7 @@ rule
     ;
   plus
     : '+'
+    { @handler.end_element; @handler.start_element }
     ;
   colon
     : ':'
@@ -58,7 +62,7 @@ rule
     ;
   segment_end
     : '\''
-    { @handler.end_segment }
+    { @handler.end_element; @handler.end_segment }
     ;
 end
 

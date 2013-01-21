@@ -68,6 +68,34 @@ module EdifactParser
       )
     end
 
+    def test_segment_with_no_colons
+      parser = new_parser("UNA:+.? 'UNB+UNOA:3+22234114345363ZZ+55643345334:ZZ+130109:1412+61236'")
+      r = parser.parse.result
+      assert_equal(
+        {"UNB" => [
+          [
+            "UNOA",
+            3
+          ],
+          [
+            "22234114345363ZZ"
+          ],
+          [
+            55643345334,
+            "ZZ"
+          ],
+          [
+            130109,
+            1412
+          ],
+          [
+            61236
+          ]
+        ]},
+        r
+      )
+    end
+
     def test_segment_blank_values
       parser = new_parser("UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ++61236'")
       r = parser.parse.result
@@ -86,7 +114,7 @@ module EdifactParser
             "ZZ"
           ],
           [
-            nil
+
           ],
           [
             61236
