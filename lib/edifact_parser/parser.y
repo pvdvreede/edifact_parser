@@ -1,5 +1,5 @@
 class EdifactParser::Parser
-token QUALIFIER STRING NUMBER OPTIONAL_BEGIN
+token QUALIFIER STRING NUMBER OPTIONAL_BEGIN SEGMENT_END PLUS COLON
 rule
   document
     : segments
@@ -8,34 +8,33 @@ rule
   beginning
     : OPTIONAL_BEGIN
     ;
-  segment
-    : qual elements
-    ;
+
   segments
     : segments segment
     | segment
     ;
-  elements
-    : elements element
-    | element
+  segment
+    : qual values segment_end
     ;
-  element
-    : plus components
-    | plus components segment_end
+  values
+    : values value
+    | value
+    ;
+  value
+    : p_scalar
+    | c_scalar
     | plus
-    ;
-  components
-    : components component
-    | component
-    ;
-  component
-    : scalar colon
-    | colon scalar
-    | scalar
+    | col
     ;
   qual
     : QUALIFIER
     { @handler.start_segment; @handler.qualifier val[0] }
+    ;
+  p_scalar
+    : plus scalar
+    ;
+  c_scalar
+    : col scalar
     ;
   scalar
     : string
@@ -47,21 +46,18 @@ rule
     ;
   string
     : STRING
-    { @handler.scalar val[0] }
+    { @handler.scalar val[0].gsub("?", "") }
     ;
   plus
-    : '+'
+    : PLUS
     { @handler.end_element; @handler.start_element }
     ;
-  colon
-    : ':'
-    ;
-  starter
-    : plus
-    | colon
+  col
+    : COLON
+    { @handler.colon }
     ;
   segment_end
-    : '\''
+    : SEGMENT_END
     { @handler.end_element; @handler.end_segment }
     ;
 end

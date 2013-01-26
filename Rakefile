@@ -8,5 +8,6 @@ end
 task :test => :compile do
   Rake::TestTask.new do |t|
     t.pattern = 'test/**/test_*.rb'
+    t.verbose = true
   end
 end

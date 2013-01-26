@@ -3,12 +3,13 @@ module EdifactParser
     attr_reader :stack
 
     def initialize
-      @stack = [[:root]]
+      @stack = [[:array]]
       @element_started = false
+      @empty = true
     end
 
     def start_segment
-      push [:hash]
+      push [:array]
     end
 
     def start_element
@@ -16,35 +17,36 @@ module EdifactParser
       @element_started = true
     end
 
-    def start_component
-      push [:array]
-    end
-
     def scalar(s)
       @stack.last << [:scalar, s]
+      @empty = false
+    end
+
+    def colon
+      if @empty
+        @stack.last << [:nil]
+      end
+      @empty = true
     end
 
     def end_segment
       @stack.pop
     end
-    alias :end_component :end_segment
 
     def end_element
       if @element_started
         @stack.pop
+        @element_started = false
       end
     end
 
     def qualifier(q)
       @stack.last << [:scalar, q]
-      push [:array]
     end
 
     def result
-      @stack
-      root = @stack.first.last
-      process root.first, root.drop(1)
-
+      root = @stack.first
+      process(root.first, root.drop(1))
     end
 
     private
@@ -53,12 +55,10 @@ module EdifactParser
         case type
         when :array
           rest.map { |x| process(x.first, x.drop(1)) }
-        when :hash
-          Hash[rest.map { |x|
-            process(x.first, x.drop(1))
-          }.each_slice(2).to_a]
         when :scalar
           rest.first
+        when :nil
+          nil
         end
       end
 
