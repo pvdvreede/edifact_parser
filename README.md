@@ -1,27 +1,98 @@
-# edifact_parser
+# edifact_parser [![Build Status](https://travis-ci.org/pvdvreede/edifact_parser.png?branch=master)](https://travis-ci.org/pvdvreede/edifact_parser)
 
-Simple UN/EDIFACT parser for ruby.
+Simple UN/EDIFACT document parser for ruby.
 
-This project will take in an EDIFACT document and parse it out to a ruby hash and array structure for you to manipulate as you please.
+This project will take in an EDIFACT document and parse it out to a ruby array structure for you to manipulate as you please.
 
 *It does NOT do any validation of the document whatsoever.* This is up to you to implement from its return value.
 
 ## Installation
 
-TBD.
+```
+gem install edifact_parser
+```
 
 ## Usage
 
-`edifact_parser` has a simple api that either takes an EDIFACT document as a string, or as ruby IO object.
+`edifact_parser` has a simple api that either takes an EDIFACT document as a string, or as a ruby IO object.
 
 As a string:
 
-    ruby_hash = EdifactParser::load(edi_string)
-    
+```ruby
+ruby_array = EdifactParser::load(edi_string)
+```
+
 As an IO object:
 
-    ruby_hash = EdifactParser::load_io(open('path/to/file'))
-    
+```ruby
+ruby_array = EdifactParser::load_io(open('path/to/file'))
+```
+
+## Output
+
+The array that is returned by the parser is an array of EDIFACT segments.
+
+The following EDIFACT document:
+
+```
+UNA:+.? '
+UNB+UNOA:3+STYLUSSTUDIO:1+DATADIRECT:1+20051107:1159+6002'
+UNH+SSDD1+ORDERS:D:03B:UN:EAN008'
+BGM+220+BKOD99+9'
+DTM+137:20051107:102'
+NAD+BY+5412345000176::9'
+NAD+SU+4012345000094::9'
+LIN+1+1+0764569104:IB'
+QTY+1:25'
+FTX+AFM+1++XPath 2.0 Programmer?'s Reference'
+LIN+2+1+0764569090:IB'
+QTY+1:25'
+FTX+AFM+1++XSLT 2.0 Programmer?'s Reference'
+LIN+3+1+1861004656:IB'
+QTY+1:16'
+FTX+AFM+1++Java Server Programming'
+LIN+4+1+0596006756:IB'
+QTY+1:10'
+FTX+AFM+1++Enterprise Service Bus'
+UNS+S'
+CNT+2:4'
+UNT+22+SSDD1'
+UNZ+1+6002'
+```
+
+Will be converted to the following ruby array:
+
+```ruby
+[
+  ["UNB", ["UNOA", 3], ["STYLUSSTUDIO", 1], ["DATADIRECT", 1], [20051107, 1159], [6002]],
+  ["UNH", ["SSDD1"], ["ORDERS", "D", "03B", "UN", "EAN008"]],
+  ["BGM", [220], ["BKOD99"], [9]],
+  ["DTM", [137, 20051107, 102]],
+  ["NAD", ["BY"], [5412345000176, nil, 9]],
+  ["NAD", ["SU"], [4012345000094, nil, 9]],
+  ["LIN", [1], [1], [764569104, "IB"]],
+  ["QTY", [1, 25]],
+  ["FTX", ["AFM"], [1], [], ["XPath 2.0 Programmer's Reference"]],
+  ["LIN", [2], [1], [764569090, "IB"]],
+  ["QTY", [1, 25]],
+  ["FTX", ["AFM"], [1], [], ["XSLT 2.0 Programmer's Reference"]],
+  ["LIN", [3], [1], [1861004656, "IB"]],
+  ["QTY", [1, 16]],
+  ["FTX", ["AFM"], [1], [], ["Java Server Programming"]],
+  ["LIN", [4], [1], [596006756, "IB"]],
+  ["QTY", [1, 10]],
+  ["FTX", ["AFM"], [1], [], ["Enterprise Service Bus"]],
+  ["UNS", ["S"]],
+  ["CNT", [2, 4]],
+  ["UNT", [22], ["SSDD1"]],
+  ["UNZ", [1], [6002]]
+]
+```
+
+Note that the componsites inside segments are arrays themselves that may contain zero to many values. If the composite is empty it will be an empty array, and if one of the values inside a composite is empty it will contain a `nil` value inside the array.
+
+To see more examples look at the [test_parser.rb](https://github.com/pvdvreede/edifact_parser/blob/master/test/test_parser.rb) file.
+
 ## License
 
 `edifact_parser` is provided free of charge under the MIT license.
