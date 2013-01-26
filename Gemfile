@@ -3,4 +3,5 @@ gemspec
 
 group :development, :test do
   gem 'rake'
+  gem 'minitest'
 end

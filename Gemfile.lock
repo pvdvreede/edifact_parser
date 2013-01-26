@@ -6,6 +6,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    minitest (2.5.1)
     racc (1.4.9)
     rake (10.0.3)
 
@@ -14,5 +15,6 @@ PLATFORMS
 
 DEPENDENCIES
   edifact_parser!
+  minitest
   racc (~> 1.4)
   rake
