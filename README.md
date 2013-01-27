@@ -16,6 +16,14 @@ gem install edifact_parser
 
 `edifact_parser` has a simple api that either takes an EDIFACT document as a string, or as a ruby IO object.
 
+Just require the gem before usage with:
+
+```ruby
+require 'edifact_parser'
+```
+
+Then parse the EDIFACT document either from a string or an IO object.
+
 As a string:
 
 ```ruby
