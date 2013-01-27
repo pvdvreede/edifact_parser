@@ -6,6 +6,10 @@ This project will take in an EDIFACT document and parse it out to a ruby array s
 
 *It does NOT do any validation of the document whatsoever.* This is up to you to implement from its return value.
 
+## Requirements
+
+This library has been tested with Ruby MRI 1.9.2 and Ruby MRI 1.9.3, so these are currently the only supported Ruby versions. You are welcome to try it with other versions and let me know if it works.
+
 ## Installation
 
 ```
