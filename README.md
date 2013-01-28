@@ -48,7 +48,7 @@ The following EDIFACT document:
 
 ```
 UNA:+.? '
-UNB+UNOA:3+STYLUSSTUDIO:1+DATADIRECT:1+20051107:1159+6002'
+UNB+UNOA:3+TESTPLACE:1+DEP1:1+20051107:1159+6002'
 UNH+SSDD1+ORDERS:D:03B:UN:EAN008'
 BGM+220+BKOD99+9'
 DTM+137:20051107:102'
@@ -76,7 +76,7 @@ Will be converted to the following ruby array:
 
 ```ruby
 [
-  ["UNB", ["UNOA", 3], ["STYLUSSTUDIO", 1], ["DATADIRECT", 1], [20051107, 1159], [6002]],
+  ["UNB", ["UNOA", 3], ["TESTPLACE", 1], ["DEP1", 1], [20051107, 1159], [6002]],
   ["UNH", ["SSDD1"], ["ORDERS", "D", "03B", "UN", "EAN008"]],
   ["BGM", [220], ["BKOD99"], [9]],
   ["DTM", [137, 20051107, 102]],
@@ -101,7 +101,7 @@ Will be converted to the following ruby array:
 ]
 ```
 
-Note that the componsites inside segments are arrays themselves that may contain zero to many values. If the composite is empty it will be an empty array, and if one of the values inside a composite is empty it will contain a `nil` value inside the array.
+Note that the composites inside segments are arrays themselves that may contain zero to many values. If the composite is empty it will be an empty array, and if one of the values inside a composite is empty it will contain a `nil` value inside the array.
 
 To see more examples look at the [test_parser.rb](https://github.com/pvdvreede/edifact_parser/blob/master/test/test_parser.rb) file.
 
