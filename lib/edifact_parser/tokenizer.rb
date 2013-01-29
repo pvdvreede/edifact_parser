@@ -2,8 +2,23 @@ require 'strscan'
 
 module EdifactParser
   class Tokenizer
+    QUALIFIERS = [
+      'UNB', 'UNH', 'UNZ', 'UNT', 'UNS', 'IFI', 'IFT', 'ODI',
+      'ADR', 'AGR', 'AJT', 'ALC', 'ALI', 'APP', 'APR', 'ARD', 'ARR', 'ASI', 'ATT', 'AUT',
+      'BAS', 'BGM', 'BII', 'BUS', 'CAV', 'CCD', 'CCI', 'CDI', 'CDS', 'CDV', 'CED', 'CIN',
+      'CLA', 'CLI', 'CMP', 'CNI', 'CNT', 'COD', 'COM', 'COT', 'CPI', 'CPS', 'CPT', 'CST',
+      'CTA', 'CUX', 'DAM', 'DFN', 'DGS', 'DII', 'DIM', 'DLI', 'DLM', 'DMS', 'DOC', 'DRD',
+      'DSG', 'DSI', 'DTM', 'EDT', 'EFI', 'ELM', 'ELU', 'ELV', 'EMP', 'EQA', 'EQD', 'EQN',
+      'ERC', 'ERP', 'EVE', 'FCA', 'FII', 'FNS', 'FNT', 'FOR', 'FSQ', 'FTX', 'GDS', 'GEI',
+      'GID', 'GIN', 'GIR', 'GOR', 'GRU', 'HAN', 'HYN', 'ICD', 'IDE', 'IFD', 'IHC', 'IMD',
+      'IND', 'INP', 'INV', 'IRQ', 'LAN', 'LIN', 'LOC', 'MEA', 'MEM', 'MKS', 'MOA', 'MSG',
+      'MTD', 'NAD', 'NAT', 'PAC', 'PAI', 'PAS', 'PCC', 'PCD', 'PCI', 'PDI', 'PER', 'PGI',
+      'PIA', 'PNA', 'POC', 'PRC', 'PRI', 'PRV', 'PSD', 'PTY', 'PYT', 'QRS', 'QTY', 'QUA',
+      'QVR', 'RCS', 'REL', 'RFF', 'RJL', 'RNG', 'ROD', 'RSL', 'RTE', 'SAL', 'SCC', 'SCD',
+      'SEG', 'SEL', 'SEQ', 'SFI', 'SGP', 'SGU', 'SPR', 'SPS', 'STA', 'STC', 'STG', 'STS',
+      'TAX', 'TCC', 'TDT', 'TEM', 'TMD', 'TMP', 'TOD', 'TPL', 'TRU', 'TSR', 'VLI' ]
+
     OPTIONAL_BEGIN = /^UNA:\+\.\?\s'/
-    QUALIFIER = /(^|(?<='))(UNB|UNH|BGM|DTM|PAI|ALI|IMD|FTX|LOC|GIS|DGS|GIR|RFF|MEA|QTY|MOA|RTE|NAD|DOC|CTA|COM|TAX|PCD|CUX|TDT|TSR|PII|TOD|PAC|EQD|SEL|ALC|RNG|INP|LIN|PRI|UNS|UNT|UNZ|CNT)/
     STRING = /[A-Za-z0-9\s\.]*(\?')*[A-Za-z0-9\s\.]*(\?\+)*[A-Za-z0-9\s\.]*(\?:)*[A-Za-z0-9\s\.]*/
     SPACE = /\s+/
     NUMBER = /[0-9]+(?=[\+:'])/
@@ -14,6 +29,7 @@ module EdifactParser
 
     def initialize(io)
       @ss = StringScanner.new io.read
+      @qualifiers = qualifier_regex
     end
 
     def next_token
@@ -27,7 +43,7 @@ module EdifactParser
 
       case
       when text = @ss.scan(OPTIONAL_BEGIN) then [:OPTIONAL_BEGIN, text]
-      when text = @ss.scan(QUALIFIER) then [:QUALIFIER, text]
+      when text = @ss.scan(@qualifiers) then [:QUALIFIER, text]
       when text = @ss.scan(SEGMENT_END) then [:SEGMENT_END, text]
       when text = @ss.scan(PLUS) then [:PLUS, text]
       when text = @ss.scan(COLON) then [:COLON, text]
@@ -38,5 +54,18 @@ module EdifactParser
         [x, x]
       end
     end
+
+    private
+
+    def qualifier_regex
+      reg_ex_string = ""
+
+      QUALIFIERS.each do |qual|
+        reg_ex_string += "#{qual}|"
+      end
+
+      /(^|(?<='))(#{reg_ex_string[0, reg_ex_string.length-1]})/
+    end
+
   end
 end

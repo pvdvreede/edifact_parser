@@ -5,14 +5,10 @@ module EdifactParser
   class TestParser < MiniTest::Unit::TestCase
     FILES_DIR = File.dirname(__FILE__) + "/files"
 
-    def setup
-      @separate_lines_file = open("#{FILES_DIR}/separate_lines.edi")
-    end
-
     def test_separate_lines_file
-      r = EdifactParser::load_io @separate_lines_file
+      r = EdifactParser::load_io open("#{FILES_DIR}/separate_lines.edi")
       assert_equal([
-        ["UNB", ["UNOA", 3], ["STYLUSSTUDIO", 1], ["DATADIRECT", 1], [20051107, 1159], [6002]],
+        ["UNB", ["UNOA", 3], ["TESTPLACE", 1], ["DEP1", 1], [20051107, 1159], [6002]],
         ["UNH", ["SSDD1"], ["ORDERS", "D", "03B", "UN", "EAN008"]],
         ["BGM", [220], ["BKOD99"], [9]],
         ["DTM", [137, 20051107, 102]],
@@ -37,8 +33,16 @@ module EdifactParser
       ], r)
     end
 
-    def test_file_getting_values
-      r = EdifactParser::load_io @separate_lines_file
+    def test_prod_avail_req_file
+      r = EdifactParser::load_io open("#{FILES_DIR}/prod_avail_req.edi")
+      assert_equal(
+        [],
+        r
+      )
+    end
+
+    def test_separate_lines_file_getting_values
+      r = EdifactParser::load_io open("#{FILES_DIR}/separate_lines.edi")
       assert_equal(r.first.first, "UNB")
       assert_equal(r[1].first, "UNH")
       assert_equal(r.last.first, "UNZ")
