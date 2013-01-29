@@ -30,38 +30,38 @@ module EdifactParser
 ##### State transition tables begin ###
 
 racc_action_table = [
-     7,    27,    26,     4,    22,    17,    18,    17,    18,    27,
-    26,     7,     7,     7,     8,    19 ]
+     7,    28,    27,     4,    20,    18,    19,    20,    18,    19,
+    28,    27,     7,     7,     7,     8,    21 ]
 
 racc_action_check = [
-     0,    15,    15,     0,    11,    11,    11,     6,     6,    16,
-    16,     3,    10,     2,     1,     8 ]
+     0,    16,    16,     0,    11,    11,    11,     6,     6,     6,
+    17,    17,     3,    10,     2,     1,     8 ]
 
 racc_action_pointer = [
-    -2,    14,    11,     9,   nil,   nil,     0,   nil,    15,   nil,
-    10,    -2,   nil,   nil,   nil,    -2,     6,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
+    -2,    15,    12,    10,   nil,   nil,     1,   nil,    16,   nil,
+    11,    -2,   nil,   nil,   nil,   nil,    -2,     7,   nil,   nil,
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
 
 racc_action_default = [
-   -23,   -23,    -1,   -23,    -3,    -5,   -23,   -13,   -23,    -4,
-    -2,   -23,    -8,    -9,   -10,   -11,   -12,   -20,   -21,    29,
-    -6,    -7,   -22,   -14,   -16,   -17,   -18,   -19,   -15 ]
+   -24,   -24,    -1,   -24,    -3,    -5,   -24,   -14,   -24,    -4,
+    -2,   -24,    -7,    -9,   -10,   -11,   -12,   -13,   -21,   -22,
+   -23,    30,    -6,    -8,   -15,   -17,   -18,   -19,   -20,   -16 ]
 
 racc_goto_table = [
-     9,    12,     2,    23,    28,    10,    21,    11,     9,    20,
-     3,     1 ]
+     9,    12,    13,    24,    29,    11,    22,    23,     9,     2,
+     3,     1,    10 ]
 
 racc_goto_check = [
-     4,     8,     2,    13,    13,     2,     8,     6,     4,     7,
-     3,     1 ]
+     4,     7,     8,    13,    13,     6,     7,     8,     4,     2,
+     3,     1,     2 ]
 
 racc_goto_pointer = [
-   nil,    11,     2,    10,    -2,   nil,     1,    -2,    -5,   nil,
-   nil,   nil,   nil,   -12,   nil,   nil ]
+   nil,    11,     9,    10,    -2,   nil,    -1,    -5,    -4,   nil,
+   nil,   nil,   nil,   -13,   nil,   nil ]
 
 racc_goto_default = [
-   nil,   nil,   nil,   nil,     5,     6,   nil,   nil,   nil,    13,
-    14,    15,    16,   nil,    24,    25 ]
+   nil,   nil,   nil,   nil,     5,     6,   nil,   nil,   nil,    14,
+    15,    16,    17,   nil,    25,    26 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
@@ -71,26 +71,27 @@ racc_reduce_table = [
   2, 11, :_reduce_none,
   1, 11, :_reduce_none,
   3, 13, :_reduce_none,
+  2, 13, :_reduce_none,
   2, 15, :_reduce_none,
   1, 15, :_reduce_none,
   1, 17, :_reduce_none,
   1, 17, :_reduce_none,
   1, 17, :_reduce_none,
   1, 17, :_reduce_none,
-  1, 14, :_reduce_13,
+  1, 14, :_reduce_14,
   2, 18, :_reduce_none,
   2, 19, :_reduce_none,
   1, 22, :_reduce_none,
   1, 22, :_reduce_none,
-  1, 24, :_reduce_18,
-  1, 23, :_reduce_19,
-  1, 20, :_reduce_20,
-  1, 21, :_reduce_21,
-  1, 16, :_reduce_22 ]
+  1, 24, :_reduce_19,
+  1, 23, :_reduce_20,
+  1, 20, :_reduce_21,
+  1, 21, :_reduce_22,
+  1, 16, :_reduce_23 ]
 
-racc_reduce_n = 23
+racc_reduce_n = 24
 
-racc_shift_n = 29
+racc_shift_n = 30
 
 racc_token_table = {
   false => 0,
@@ -180,12 +181,12 @@ Racc_debug_parser = true
 
 # reduce 12 omitted
 
-def _reduce_13(val, _values, result)
+# reduce 13 omitted
+
+def _reduce_14(val, _values, result)
  @handler.start_segment; @handler.qualifier val[0] 
     result
 end
-
-# reduce 14 omitted
 
 # reduce 15 omitted
 
@@ -193,27 +194,29 @@ end
 
 # reduce 17 omitted
 
-def _reduce_18(val, _values, result)
+# reduce 18 omitted
+
+def _reduce_19(val, _values, result)
  @handler.scalar val[0] 
     result
 end
 
-def _reduce_19(val, _values, result)
+def _reduce_20(val, _values, result)
  @handler.scalar val[0].gsub("?", "") 
     result
 end
 
-def _reduce_20(val, _values, result)
+def _reduce_21(val, _values, result)
  @handler.end_element; @handler.start_element 
     result
 end
 
-def _reduce_21(val, _values, result)
+def _reduce_22(val, _values, result)
  @handler.colon 
     result
 end
 
-def _reduce_22(val, _values, result)
+def _reduce_23(val, _values, result)
  @handler.end_element; @handler.end_segment 
     result
 end

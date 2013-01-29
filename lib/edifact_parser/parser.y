@@ -15,6 +15,7 @@ rule
     ;
   segment
     : qual values segment_end
+    | qual segment_end
     ;
   values
     : values value

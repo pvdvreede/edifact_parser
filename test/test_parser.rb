@@ -35,8 +35,23 @@ module EdifactParser
 
     def test_prod_avail_req_file
       r = EdifactParser::load_io open("#{FILES_DIR}/prod_avail_req.edi")
-      assert_equal(
-        [],
+      assert_equal([
+        ["UNB", ["IATB", 1], ["6XPPC"], ["LHPPC"], [940101, 950], [1]],
+        ["UNH", [1], ["PAORES", 93, 1, "IA"]],
+        ["MSG", [1, 45]],
+        ["IFT", [3], ["XYZCOMPANY AVAILABILITY"]],
+        ["ERC", ["A7V", 1, "AMD"]],
+        ["IFT", [3], ["NO MORE FLIGHTS"]],
+        ["ODI"],
+        ["TVL", [240493, 1000, nil, 1220], ["FRA"], ["JFK"], ["DL"], [400], ["C"]],
+        ["PDI", [], ["C", 3], ["Y", nil, 3], ["F", nil, 1]],
+        ["APD", ["74C", 0, nil, nil, 6], [], [], [], [], [], ["6X"]],
+        ["TVL", [240493, 1740, nil, 2030], ["JFK"], ["MIA"], ["DL"], [81], ["C"]],
+        ["PDI", [], ["C", 4]],
+        ["APD", ["EM2", 0, 1630, nil, 6], [], [], [], [], [], [], ["DA"]],
+        ["UNT", [13], [1]],
+        ["UNZ", [1], [1]]
+      ],
         r
       )
     end
