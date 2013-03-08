@@ -8,7 +8,13 @@ This project will take in an EDIFACT document and parse it out to a ruby array s
 
 ## Requirements
 
-This library has been tested with Ruby MRI 1.9.2 and Ruby MRI 1.9.3, so these are currently the only supported Ruby versions. You are welcome to try it with other versions and let me know if it works.
+This library has been tested on the following:
+
+* Ruby MRI 1.9.2
+* Ruby MRI 1.9.3
+* Ruby MRI 2.0.0
+ 
+These are currently the only supported Ruby versions. You are welcome to try it with other versions and let me know if it works.
 
 ## Installation
 
