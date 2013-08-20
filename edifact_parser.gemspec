@@ -8,7 +8,8 @@ Gem::Specification.new do |s|
   s.email       = 'paul@vdvreede.net'
   s.files       = Dir['lib/**/*.rb']
   s.homepage    = 'https://github.com/pvdvreede/edifact_parser'
-  s.platform    = Gem::Platform::RUBY
 
   s.add_development_dependency "racc", "~> 1.4"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "minitest"
 end
