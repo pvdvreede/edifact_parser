@@ -7,6 +7,7 @@ module EdifactParser
 
     def test_separate_lines_file
       r = EdifactParser::load_io open("#{FILES_DIR}/separate_lines.edi")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal([
         ["UNB", ["UNOA", 3], ["TESTPLACE", 1], ["DEP1", 1], [20051107, 1159], [6002]],
         ["UNH", ["SSDD1"], ["ORDERS", "D", "03B", "UN", "EAN008"]],
@@ -35,6 +36,7 @@ module EdifactParser
 
     def test_prod_avail_req_file
       r = EdifactParser::load_io open("#{FILES_DIR}/prod_avail_req.edi")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal([
         ["UNB", ["IATB", 1], ["6XPPC"], ["LHPPC"], [940101, 950], [1]],
         ["UNH", [1], ["PAORES", 93, 1, "IA"]],
@@ -58,6 +60,7 @@ module EdifactParser
 
     def test_separate_lines_file_getting_values
       r = EdifactParser::load_io open("#{FILES_DIR}/separate_lines.edi")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(r.first.first, "UNB")
       assert_equal(r[1].first, "UNH")
       assert_equal(r.last.first, "UNZ")
@@ -65,6 +68,7 @@ module EdifactParser
 
     def test_escape_character_in_string
       r = EdifactParser::load("FTX+AFM+1++XSLT 2.0 Programmer?'s Reference'")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["FTX", ["AFM"], [1], [], ["XSLT 2.0 Programmer's Reference"]]
@@ -75,6 +79,7 @@ module EdifactParser
 
     def test_two_segment_document
       r = EdifactParser::load("FTX+AFM+1++Java Server Programming'LIN+4+1+0596006756:IB'")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["FTX", ["AFM"], [1], [], ["Java Server Programming"]],
@@ -86,6 +91,7 @@ module EdifactParser
 
     def test_segment_with_colons
       r = EdifactParser::load("DTM+137:20051107:102'")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["DTM", [137, 20051107, 102]]
@@ -96,6 +102,7 @@ module EdifactParser
 
     def test_segment_with_empty_colons
       r = EdifactParser::load("NAD+SU+4012345000094::9'")
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["NAD", ["SU"], [4012345000094, nil, 9]]
@@ -107,6 +114,7 @@ module EdifactParser
     def test_basic_segment
       parser = new_parser("UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ+130109:1412+61236'")
       r = parser.parse.result
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["UNB",
@@ -140,6 +148,7 @@ module EdifactParser
     def test_segment_with_UNA
       parser = new_parser("UNA:+.? 'UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ+130109:1412+61236'")
       r = parser.parse.result
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
         ["UNB",
@@ -171,6 +180,7 @@ module EdifactParser
     def test_segment_with_no_colons
       parser = new_parser("UNT+22+SSDD1'")
       r = parser.parse.result
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
           ["UNT", [22], ["SSDD1"]]
@@ -182,6 +192,7 @@ module EdifactParser
     def test_segment_with_blank_element
       parser = new_parser("UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ++61236'")
       r = parser.parse.result
+      assert(r.is_a?(EdifactParser::Array))
       assert_equal(
         [
         ["UNB",

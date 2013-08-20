@@ -46,7 +46,7 @@ module EdifactParser
 
     def result
       root = @stack.first
-      process(root.first, root.drop(1))
+      EdifactParser::Array.new(process(root.first, root.drop(1)))
     end
 
     private

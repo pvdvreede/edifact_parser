@@ -1,5 +1,6 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
+require 'edifact_parser/array'
 require 'edifact_parser/parser'
 require 'edifact_parser/tokenizer'
 require 'stringio'
