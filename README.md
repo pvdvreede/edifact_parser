@@ -13,7 +13,8 @@ This library has been tested on the following:
 * Ruby MRI 1.9.2
 * Ruby MRI 1.9.3
 * Ruby MRI 2.0.0
- 
+* JRuby 1.7 in 1.9 mode
+
 These are currently the only supported Ruby versions. You are welcome to try it with other versions and let me know if it works.
 
 ## Installation
