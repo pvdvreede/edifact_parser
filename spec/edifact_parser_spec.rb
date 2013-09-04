@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-require 'parslet/rig/rspec'
-require 'edifact_parser'
+require 'spec_helper'
 
 describe EdifactParser::Parser do
   let(:parser)    { EdifactParser::Parser.new }

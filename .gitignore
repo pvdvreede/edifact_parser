@@ -2,3 +2,4 @@
 *.tab.rb
 *.gem
 .ruby-version
+coverage

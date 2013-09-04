@@ -11,6 +11,7 @@ GEM
     backports (3.3.3)
     blankslate (2.1.2.4)
     diff-lcs (1.2.4)
+    multi_json (1.7.9)
     parser (2.0.0.pre6)
       ast (~> 1.1)
       slop (~> 3.4, >= 3.4.5)
@@ -32,6 +33,10 @@ GEM
       parser (~> 2.0.0.pre6)
       powerpack (~> 0.0.3)
       rainbow (>= 1.1.4)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
     slop (3.4.6)
 
 PLATFORMS
@@ -42,3 +47,4 @@ DEPENDENCIES
   rake
   rspec
   rubocop
+  simplecov
