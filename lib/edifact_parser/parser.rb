@@ -4,14 +4,25 @@
 class EdifactParser::Parser < ::Parslet::Parser
 
   # Scalar values
-  rule(:digit)          { match('[0-9]') }
+  rule(:digit) do
+    match('[0-9]')
+  end
+
+  rule(:negative) do
+    str('-')
+  end
 
   rule(:integer) do
-    str('-').maybe >> match('[1-9]') >> digit.repeat
+    negative.maybe >>
+    match('[1-9]') >>
+    digit.repeat
   end
 
   rule(:float) do
-    str('-').maybe >> digit.repeat(1) >> str('.') >> digit.repeat(1)
+    negative.maybe >>
+    digit.repeat(1) >>
+    str('.') >>
+    digit.repeat(1)
   end
 
   rule(:string_escape)    { str('?') }
@@ -25,7 +36,31 @@ class EdifactParser::Parser < ::Parslet::Parser
   end
 
   rule(:scalar) do
-    float | integer | string
+    string | float | integer
+  end
+
+  rule(:value) do
+    data_value | comp_value | data_sep | component_sep
+  end
+
+  rule(:values) do
+    value.repeat(1)
+  end
+
+  rule(:segment) do
+    qualifier >> values.maybe >> segment_end >> whitespace.maybe
+  end
+
+  rule(:segments) do
+    segment.repeat(1)
+  end
+
+  rule(:document) do
+    segments
+  end
+
+  rule(:whitespace) do
+    match('[\s\t\r\n]').repeat(1)
   end
 
   # Separators
@@ -43,6 +78,7 @@ class EdifactParser::Parser < ::Parslet::Parser
   rule(:component_sep)  { string_escape.absent? >> colon }
   rule(:data_sep)       { string_escape.absent? >> plus }
   rule(:separator)      { component_sep | data_sep }
+  rule(:any_separator)  { separator | segment_end }
 
   rule(:line_start)     { match('[^]') }
   rule(:line_end)       { match('[\n\r]') }

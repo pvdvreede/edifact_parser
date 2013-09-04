@@ -23,6 +23,8 @@ describe EdifactParser::Parser do
 
   it 'parses strings' do
     expect(parser.string).to     parse('hello there')
+    expect(parser.string).to     parse('96A')
+    expect(parser.string).to     parse('D')
     expect(parser.string).to     parse('hello there it?\'s great!')
     expect(parser.string).to     parse('hello there it?\'s great!')
     expect(parser.string).to_not parse('hello there it\'s great!')
@@ -61,12 +63,34 @@ describe EdifactParser::Parser do
     expect(parser.data_sep).to_not  parse('?+')
   end
 
-  # it 'parses a segment' do
-  #   expect(parser.segment).to     parse('+324:a string!+')
-  #   expect(parser.segment).to     parse('+324:a string!\'')
-  #   expect(parser.segment).to     parse('+324:a string!:1.234\'')
-  #   expect(parser.segment).to_not parse('+324+')
-  #   expect(parser.segment).to_not parse('+a string\'')
-  # end
+  it 'parses a segment' do
+    expect(parser.segment).to     parse('ABC+helo:123\'')
+    expect(parser.segment).to     parse('ABC++testing:1232+sdfsd\'')
+    expect(parser.segment).to     parse(
+      'UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ+130109:1412+61236\'')
+    expect(parser.segment).to     parse('UNH+1237+ORDERS:D:96A:UN\'')
+    expect(parser.segment).to     parse('UNH\'')
+    expect(parser.segment).to_not parse('GHF+324+')
+    expect(parser.segment).to_not parse('+a string\'')
+  end
+
+  it 'parses documents' do
+    expect(parser.document).to     parse(
+      'UNA:+.? \'' +
+      'UNB+UNOA:3+22234114345363:ZZ+55643345334:ZZ+130109:1412+61236\'' +
+      'UNH+1237+ORDERS:D:96A:UN:EAN008\'')
+    expect(parser.document).to     parse(
+      'UNA:+.? \'' +
+      'UNB+UNOA:3+7788665534566:ZZ+55643345334:ZZ+130109:1412+61236\'' +
+      'UNH+1237+ORDERS:D:96A:UN:EAN008\'  ')
+    expect(parser.document).to     parse(
+      'UNA:+.? \'' +
+      'UNB+UNOA:3+ 7788665534566:ZZ+55643345334:ZZ+130109:1412+61236\'' +
+      'UNH+1237+ORDERS with space:D:96A:UN:EAN008\'')
+    expect(parser.document).to     parse(
+      'UNA:+.? \'' +
+      'UNB+UNOA:3+ 7788665534566:ZZ+55643345334:ZZ+130109:1412+61236\'' +
+      'UNH+1237+contains an escape?\' character or ?+two:D:96A:UN:EAN008\'  ')
+  end
 
 end
