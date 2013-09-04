@@ -16,6 +16,7 @@ describe EdifactParser::Parser do
   it 'parses floats' do
     expect(parser.float).to     parse('0.1')
     expect(parser.float).to     parse('3.14159')
+    expect(parser.float).to     parse('12303.56')
     expect(parser.float).to     parse('-0.00001')
     expect(parser.float).to_not parse('.1')
   end
@@ -26,6 +27,14 @@ describe EdifactParser::Parser do
     expect(parser.string).to     parse('hello there it?\'s great!')
     expect(parser.string).to_not parse('hello there it\'s great!')
     expect(parser.string).to_not parse('hello there +1 great!')
+  end
+
+  it 'parses scalars' do
+    expect(parser.scalar).to      parse('hi, how are you')
+    expect(parser.scalar).to      parse('1233')
+    expect(parser.scalar).to      parse('-4590')
+    expect(parser.scalar).to      parse('-45.34598')
+    expect(parser.scalar).to      parse('12.453')
   end
 
   it 'parses qualifiers' do
