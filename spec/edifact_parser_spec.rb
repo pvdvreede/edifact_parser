@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 require 'parslet/rig/rspec'
 require 'edifact_parser'
 

@@ -10,7 +10,6 @@ This project will take in an EDIFACT document and parse it out to a ruby array s
 
 This library has been tested on the following:
 
-* Ruby MRI 1.9.2
 * Ruby MRI 1.9.3
 * Ruby MRI 2.0.0
 * JRuby 1.7 in 1.9 mode

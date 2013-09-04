@@ -1,3 +1,4 @@
 *.output
 *.tab.rb
 *.gem
+.ruby-version

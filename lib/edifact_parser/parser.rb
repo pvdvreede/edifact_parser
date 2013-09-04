@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 module EdifactParser
   # Main parser file
   class Parser < ::Parslet::Parser
