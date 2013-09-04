@@ -1,13 +1,6 @@
 # -*- ruby -*-
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-task :compile do
-  sh "racc -v -g -l -o lib/edifact_parser/parser.rb lib/edifact_parser/parser.y"
-end
+RSpec::Core::RakeTask.new(:spec)
 
-task :test => :compile do
-  Rake::TestTask.new do |t|
-    t.pattern = 'test/**/test_*.rb'
-    t.verbose = true
-  end
-end
+task :default => :spec

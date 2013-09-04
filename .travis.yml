@@ -5,4 +5,5 @@ rvm:
   - 2.0.0
   - jruby-19mode
 
-script: "bundle exec rake test TESTOPTS='-v'"
+script: "bundle exec rake"
+after_script: "bundle install rubocop"
