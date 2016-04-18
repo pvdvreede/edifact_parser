@@ -11,3 +11,6 @@ task :test => :compile do
     t.verbose = true
   end
 end
+
+desc "Run tests"
+task :default => :test
