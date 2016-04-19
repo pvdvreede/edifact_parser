@@ -1,6 +1,5 @@
 require_relative 'format'
 require 'strscan'
-require 'pry'
 
 module EdifactParser
   class Tokenizer
