@@ -208,6 +208,13 @@ module EdifactParser
       )
     end
 
+    def test_parser_error_thrown
+      parser = new_parser("asdjasdpo LULULU 191292**;;")
+      assert_raises(EdifactParser::ParseError) do
+        r = parser.parse.result
+      end
+    end
+
     def new_parser(string)
       tok = Tokenizer.new StringIO.new(string)
       Parser.new tok

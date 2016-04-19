@@ -66,6 +66,7 @@ end
 ---- inner
 
   require_relative 'handler'
+  require_relative 'parse_error'
 
   attr_reader :handler
 
@@ -82,4 +83,6 @@ end
   def parse
     do_parse
     handler
+  rescue Racc::ParseError => e
+    raise EdifactParser::ParseError.new(e.message)
   end

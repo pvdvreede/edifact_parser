@@ -10,7 +10,7 @@ module EdifactParser
     end
 
     def next_token
-      return if @ss.eos?
+      return if end_of_string_reached?
 
       # ignore spaces and line breaks
       scan(:space) and scan(:line_break)
