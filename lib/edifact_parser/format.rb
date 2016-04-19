@@ -36,6 +36,7 @@ module EdifactParser
                    decimal_notification: '.',
                    release_indicator: '?',
                    segment_terminator: "'")
+
       @component_data_element_selector = component_data_element_selector
       @data_element_separator = data_element_separator
       @decimal_notification = decimal_notification
@@ -52,11 +53,11 @@ module EdifactParser
 
     private
 
+    # Defines a positive lookahead that matches on of the defined field separators
     def look_forward_to_separator
-      separator_matchers = [@component_data_element_selector,
-                            @data_element_separator,
-                            @release_indicator,
-                            @segment_terminator].map { |c| "\\#{c}" }.join('|')
+      separator_matchers = [component_data_element_selector,
+                            data_element_separator,
+                            segment_terminator].join('|')
       "(?=[#{separator_matchers}])"
     end
 
@@ -66,12 +67,21 @@ module EdifactParser
       @regexes[:string]         = string_regex
       @regexes[:space]          = /\s+/
       @regexes[:line_break]     = /\n/
-      @regexes[:number]         = /[0-9]+#{'\\' + @decimal_notification}?[0-9]?+#{look_forward_to_separator}/
-      @regexes[:segment_end]    = /(?<!#{'\\' + @release_indicator})#{'\\' + @segment_terminator}/
-      @regexes[:plus]           = /(?<!#{'\\' + @release_indicator})#{'\\' + @data_element_separator}/
-      @regexes[:colon]          = /(?<!#{'\\' + @release_indicator})#{'\\' + @component_data_element_selector}/
+
+      # matches numbers potentially including a decimal separator up until the next field separator
+      @regexes[:number]         = /[0-9]+#{decimal_notification}?[0-9]*#{look_forward_to_separator}/
+
+      # matches an unescaped segment terminator
+      @regexes[:segment_end]    = /#{unescaped segment_terminator}/
+
+      # matches an unescaped data element separator
+      @regexes[:plus]           = /#{unescaped data_element_separator}/
+
+      # matches an unescaped component data element selector
+      @regexes[:colon]          = /#{unescaped component_data_element_selector}/
     end
 
+    # Matches QUALIFIERS that are followed by an unescaped field separator
     def qualifier_regex
       reg_ex_string = ""
 
@@ -79,11 +89,36 @@ module EdifactParser
         reg_ex_string += "#{qual}#{look_forward_to_separator}|"
       end
 
-      /(^|(?<=\#{@segment_terminator}))(#{reg_ex_string[0, reg_ex_string.length-1]})/
+      /(^|(?<=#{segment_terminator}))(#{reg_ex_string[0, reg_ex_string.length-1]})/
     end
 
+    # Matches a string up until an unescaped field separator
     def string_regex
-      /^.*?[^#{'\\' + @release_indicator }](?=[#{'\\' + @component_data_element_selector}|#{'\\' + @segment_terminator}|#{'\\' + @data_element_separator}])/
+      /^.*?[^#{release_indicator}]#{look_forward_to_separator}/
+    end
+
+    def decimal_notification
+      '\\' + @decimal_notification
+    end
+
+    def release_indicator
+      '\\' + @release_indicator
+    end
+
+    def component_data_element_selector
+      '\\' + @component_data_element_selector
+    end
+
+    def data_element_separator
+      '\\' + @data_element_separator
+    end
+
+    def segment_terminator
+      '\\' + @segment_terminator
+    end
+
+    def unescaped(arg)
+      "(?<!#{release_indicator})#{arg}"
     end
   end
 end
