@@ -10,6 +10,7 @@ module EdifactParser
 
 
   require_relative 'handler'
+  require_relative 'parse_error'
 
   attr_reader :handler
 
@@ -26,6 +27,8 @@ module EdifactParser
   def parse
     do_parse
     handler
+  rescue Racc::ParseError => e
+    raise EdifactParser::ParseError.new(e.message)
   end
 ##### State transition tables begin ###
 
