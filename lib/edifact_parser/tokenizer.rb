@@ -16,7 +16,7 @@ module EdifactParser
       'PIA', 'PNA', 'POC', 'PRC', 'PRI', 'PRV', 'PSD', 'PTY', 'PYT', 'QRS', 'QTY', 'QUA',
       'QVR', 'RCS', 'REL', 'RFF', 'RJL', 'RNG', 'ROD', 'RSL', 'RTE', 'SAL', 'SCC', 'SCD',
       'SEG', 'SEL', 'SEQ', 'SFI', 'SGP', 'SGU', 'SPR', 'SPS', 'STA', 'STC', 'STG', 'STS',
-      'TAX', 'TCC', 'TDT', 'TEM', 'TMD', 'TMP', 'TOD', 'TPL', 'TRU', 'TSR', 'VLI' ]
+      'TAX', 'TCC', 'TDT', 'TEM', 'TMD', 'TMP', 'TOD', 'TPL', 'TRU', 'TSR', 'VLI','IFT' ]
 
     OPTIONAL_BEGIN = /^UNA:\+\.\?\s'/
     STRING = /[A-Za-z0-9\s\.]*(\?')*[A-Za-z0-9\s\.]*(\?\+)*[A-Za-z0-9\s\.]*(\?:)*[A-Za-z0-9\s\.]*/
