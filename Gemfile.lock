@@ -8,7 +8,7 @@ GEM
   specs:
     minitest (2.5.1)
     racc (1.4.9)
-    rake (10.0.3)
+    rake (12.3.3)
 
 PLATFORMS
   ruby
